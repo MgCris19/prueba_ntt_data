@@ -1,1 +1,0 @@
-# prueba_ntt_data
