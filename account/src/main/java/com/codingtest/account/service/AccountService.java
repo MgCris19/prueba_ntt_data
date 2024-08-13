@@ -17,5 +17,5 @@ public interface AccountService {
     AccountDto updateAccount(AccountDto account)  throws ResourceNotFoundException;
     AccountDto delete(Long id)  throws ResourceNotFoundException;
     AccountDto deleteAccount(String accountNumber, Long id)  throws ResourceNotFoundException;
-    List<AccountDto> deleteAccountsByClient(String name)  throws ResourceNotFoundException;
+    List<AccountDto> deleteAccountsByClient(String name) ;
 }

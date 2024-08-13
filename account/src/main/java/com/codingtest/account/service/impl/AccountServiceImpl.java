@@ -22,10 +22,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
 
-    @Autowired
-    private AccountRepository accountRepository;
-    @Autowired
-    private ClientRepository clientRepository;
+    private final AccountRepository accountRepository;
+
+    private final ClientRepository clientRepository;
 
     @Override
     public List<AccountDto> findAll() {
@@ -112,7 +111,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<AccountDto> deleteAccountsByClient(String name) {
+    public List<AccountDto> deleteAccountsByClient(String name){
 
            List<Account> accountList = accountRepository.findAccountsByClientName(name).orElse(new ArrayList<>());
            List<AccountDto> accountDtoList = new ArrayList<>();

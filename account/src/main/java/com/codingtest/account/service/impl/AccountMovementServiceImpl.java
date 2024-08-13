@@ -28,11 +28,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AccountMovementServiceImpl implements AccountMovementService {
 
-    @Autowired
-    private AccountMovementRepository accountMovementRepository;
+    private final AccountMovementRepository accountMovementRepository;
 
-    @Autowired
-    private AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
 
     @Override
     public List<AccountMovementDto> findAll() {
