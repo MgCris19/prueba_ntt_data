@@ -1,6 +1,6 @@
 package com.codingtest.account.repository;
 
-import com.codingtest.account.model.Client;
+import com.codingtest.account.entity.Client;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

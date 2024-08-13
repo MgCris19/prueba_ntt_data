@@ -20,7 +20,7 @@ CREATE TABLE clientes (
 	id BIGINT auto_increment NOT NULL,
 	id_persona BIGINT NOT NULL,
 	contraseña varchar(100) NOT NULL,
-	estado char(1) NULL DEFAULT 'A',
+	estado char(1) NOT NULL DEFAULT 'A',
 	CONSTRAINT cliente_PK PRIMARY KEY (id),
 	CONSTRAINT cliente_FK FOREIGN KEY (id_persona) REFERENCES test_db.persona(id)
 )
@@ -28,7 +28,7 @@ ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4
 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE test_db.cuentas (
+CCREATE TABLE cuentas (
 	id BIGINT auto_increment NOT NULL,
 	id_cliente BIGINT NOT NULL,
 	numero_cuenta varchar(100) NOT NULL,
@@ -37,13 +37,13 @@ CREATE TABLE test_db.cuentas (
 	saldo_disponible DECIMAL DEFAULT 0 NOT NULL,
 	estado char(1) NOT NULL DEFAULT 'A',
 	CONSTRAINT cuenta_PK PRIMARY KEY (id),
-	CONSTRAINT cuenta_FK FOREIGN KEY (id_cliente) REFERENCES test_db.cliente(id)
+	CONSTRAINT cuenta_FK FOREIGN KEY (id_cliente) REFERENCES clientes(id)
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4
 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE test_db.movimientoss (
+CREATE TABLE movimientos (
 	id BIGINT auto_increment NOT NULL,
 	id_cuenta BIGINT NOT NULL,
 	fecha DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -51,7 +51,7 @@ CREATE TABLE test_db.movimientoss (
 	valor DECIMAL DEFAULT 0 NOT NULL,
 	saldo DECIMAL DEFAULT 0 NOT NULL,
 	CONSTRAINT movimientos_PK PRIMARY KEY (id),
-	CONSTRAINT movimientos_FK FOREIGN KEY (cuenta_id) REFERENCES test_db.cuenta(id)
+	CONSTRAINT movimientos_FK FOREIGN KEY (id_cuenta) REFERENCES cuentas(id)
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4

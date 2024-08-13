@@ -1,10 +1,18 @@
 package com.codingtest.account.controller;
 
-import com.codingtest.account.model.Account;
-import com.codingtest.account.model.Client;
-import com.codingtest.account.service.AccountService;
+import com.codingtest.account.dto.AccountDto;
+import com.codingtest.account.dto.request.AccountRequest;
+import com.codingtest.account.dto.response.AccountResponse;
+import com.codingtest.account.dto.response.AccountsResponse;
+import com.codingtest.account.dto.response.Response;
+import com.codingtest.account.exception.ResourceFoundException;
+import com.codingtest.account.exception.ResourceNotFoundException;
+import com.codingtest.account.service.impl.AccountServiceImpl;
+import com.codingtest.account.validation.ValidationGroups;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,46 +22,75 @@ import java.util.List;
 public class AccountController {
 
     @Autowired
-    private AccountService accountService;
+    private AccountServiceImpl accountServiceImpl;
 
     @GetMapping
-    public List<Account> getAllAccounts() {
-        return accountService.findAll();
+    public Response<AccountsResponse, Error> getAllAccounts() {
+        var accounts = accountServiceImpl.findAll();
+
+        var response = AccountsResponse.builder().accounts(accounts).build();
+
+        return Response.ok(response);
     }
 
     @GetMapping("/{id}")
-    public Account getAccountById(@PathVariable Long id) {
-        return accountService.findById(id);
+    public Response<AccountResponse, Error> getAccountById(@PathVariable Long id) throws ResourceNotFoundException {
+        var account = accountServiceImpl.findById(id);
+
+        var response = AccountResponse.builder().account(account).build();
+
+        return Response.ok(response);
     }
 
     @GetMapping("/{accountNumber}")
-    public Account getAccountByAccountNumber(@PathVariable String accountNumber) {
-        return accountService.findAccountByAccountNumber(accountNumber);
+    public Response<AccountResponse, Error> getAccountByAccountNumber(@PathVariable String accountNumber) throws ResourceNotFoundException {
+        var account = accountServiceImpl.findAccountByAccountNumber(accountNumber);
+
+        var response = AccountResponse.builder().account(account).build();
+
+        return Response.ok(response);
     }
 
     @PostMapping
-    public ResponseEntity<?> createAccount(@RequestBody Account account) {
-        return accountService.save(account);
+    public Response<AccountResponse, Error> createAccount(@Validated(ValidationGroups.CreateAccount.class)
+                                                              @Valid @RequestBody AccountRequest accountRequest) throws ResourceFoundException, ResourceNotFoundException {
+        var account = accountServiceImpl.save(accountRequest.getAccountDto());
+
+        var response = AccountResponse.builder().account(account).build();
+
+        return Response.ok(response);
     }
 
     @PutMapping("/")
-    public ResponseEntity<?> updateAccount(@RequestBody Account account) {
-        return accountService.updateAccount(account);
+    public Response<AccountResponse, Error> updateAccount(@Valid @RequestBody AccountRequest accountRequest) throws ResourceFoundException,ResourceNotFoundException {
+        var account = accountServiceImpl.updateAccount(accountRequest.getAccountDto());
+
+        var response = AccountResponse.builder().account(account).build();
+
+        return Response.ok(response);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?>  deleteAccount(@PathVariable Long id) {
-        return accountService.deleteAccount(null,id);
+    public Response<AccountResponse, Error> deleteAccount(@PathVariable Long id) throws ResourceNotFoundException {
+        var account = accountServiceImpl.deleteAccount(null,id);
+
+        var response = AccountResponse.builder().account(account).build();
+
+        return Response.ok(response);
     }
 
     @DeleteMapping("/numeroCuenta/{accountNumber}")
-    public ResponseEntity<?>  deleteByAccountNumber(@PathVariable String accountNumber) {
-       return accountService.deleteAccount(accountNumber,null);
+    public Response<AccountResponse, Error> deleteByAccountNumber(@PathVariable String accountNumber) throws ResourceNotFoundException {
+        var account = accountServiceImpl.deleteAccount(accountNumber,null);
+
+        var response = AccountResponse.builder().account(account).build();
+
+        return Response.ok(response);
     }
 
     @DeleteMapping("/desactivarCuentas/{name}")
-    public ResponseEntity<?>  deleteAccountsByClientName(@PathVariable String name) {
-        return accountService.deleteAccountsByClient(name);
+    public List<AccountDto>  deleteAccountsByClientName(@PathVariable String name) {
+        return accountServiceImpl.deleteAccountsByClient(name);
     }
 
 }

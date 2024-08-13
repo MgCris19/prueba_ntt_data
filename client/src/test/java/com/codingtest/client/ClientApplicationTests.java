@@ -3,9 +3,9 @@ package com.codingtest.client;
 import static org.mockito.Mockito.*;
 import static org.assertj.core.api.Assertions.*;
 
-import com.codingtest.client.model.Client;
+import com.codingtest.client.entity.Client;
 import com.codingtest.client.repository.ClientRepository;
-import com.codingtest.client.service.ClientService;
+import com.codingtest.client.service.impl.ClientServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -22,7 +22,7 @@ public class ClientApplicationTests {
 	private ClientRepository clientRepository;
 
 	@InjectMocks
-	private ClientService clientService;
+	private ClientServiceImpl clientServiceImpl;
 
 	@BeforeEach
 	void setUp() {

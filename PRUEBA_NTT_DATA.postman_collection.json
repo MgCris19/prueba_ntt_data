@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"password\": \"1234\",\r\n    \"status\": true,\r\n    \"person\": {\r\n        \"name\": \"Jose Lema\",\r\n        \"address\": \"Otavalo sin y principal\",\r\n        \"phone\": \"098254785\"\r\n    }\r\n}",
+							"raw": "{\r\n    \"clientDto\": {\r\n        \"password\": \"1234\",\r\n        \"status\": true,\r\n        \"person\": {\r\n            \"name\": \"JUAN\",\r\n            \"address\": \"Otavalo sin y principal\",\r\n            \"phone\": \"098254785\"\r\n        }\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -79,7 +79,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"password\": \"1234\",\r\n    \"status\": true,\r\n    \"person\": {\r\n        \"name\": \"Jose Lema\",\r\n        \"address\": \"Otavalo sin y principal\",\r\n        \"phone\": \"098254785\"\r\n    }\r\n}",
+							"raw": "{\r\n    \"clientDto\": {\r\n        \"password\": \"cris\",\r\n        \"status\": true,\r\n        \"person\": {\r\n            \"name\": \"865886\",\r\n            \"address\": \"Otavalo sin y principal\",\r\n            \"phone\": \"098254785\"\r\n        }\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -118,7 +118,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/v1/clientes/nombre/Jose Lema",
+							"raw": "http://localhost:8080/api/v1/clientes/nombre/865886",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -129,7 +129,7 @@
 								"v1",
 								"clientes",
 								"nombre",
-								"Jose Lema"
+								"865886"
 							]
 						}
 					},
@@ -147,7 +147,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"accountNumber\": \"478758\",\r\n    \"accountType\":\"Ahorro\",\r\n    \"initialBalance\":2000,\r\n    \"status\": true,\r\n    \"client\":{\r\n    \"person\": {\r\n        \"name\": \"Jose Lema\"\r\n       \r\n    }\r\n    }\r\n    \r\n}",
+							"raw": "{\r\n    \"accountDto\": {\r\n        \"accountNumber\": \"478758\",\r\n        \"accountType\": \"Ahorro\",\r\n        \"initialBalance\": 2000,\r\n        \"status\": true,\r\n        \"client\": {\r\n            \"person\": {\r\n                \"name\": \"865886\"\r\n            }\r\n        }\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -177,7 +177,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"accountNumber\": \"478758\",\r\n    \"accountType\":\"Ahorro\",\r\n    \"initialBalance\":2000,\r\n    \"status\": true,\r\n    \"client\":{\r\n    \"person\": {\r\n        \"name\": \"Jose Lema\"\r\n       \r\n    }\r\n    }\r\n    \r\n}",
+							"raw": "{\r\n    \"accountDto\": {\r\n        \"accountNumber\": \"478758\",\r\n        \"accountType\": \"Ahorro\",\r\n        \"initialBalance\": 2000,\r\n        \"status\": true,\r\n        \"client\": {\r\n            \"person\": {\r\n                \"name\": \"Jose Lema\"\r\n            }\r\n        }\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -185,7 +185,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8090/api/v1/cuentas",
+							"raw": "http://localhost:8090/api/v1/cuentas/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -194,7 +194,8 @@
 							"path": [
 								"api",
 								"v1",
-								"cuentas"
+								"cuentas",
+								""
 							]
 						}
 					},
@@ -277,7 +278,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"transactionType\": \"RETIRO\",\r\n    \"value\": -5000,\r\n    \"account\": {\r\n        \"accountNumber\": \"478758\",\r\n        \"accountType\": \"Ahorro\",\r\n        \"initialBalance\": 2000,\r\n        \"status\": true\r\n    }\r\n}",
+							"raw": "{\r\n    \"accountMovementDto\": {\r\n        \"transactionType\": \"DEPOSITO\",\r\n        \"value\": 1000,\r\n        \"account\": {\r\n            \"accountNumber\": \"478758\",\r\n            \"accountType\": \"Ahorro\",\r\n            \"initialBalance\": 2000,\r\n            \"status\": true\r\n        }\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -306,7 +307,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8090/api/v1/movimientos/reportes?clientName=Jose Lema&startDate=2024-01-01&endDate=2024-12-31",
+							"raw": "http://localhost:8090/api/v1/movimientos/reportes?clientName=865886&startDate=2024-01-01&endDate=2024-12-31",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -321,7 +322,7 @@
 							"query": [
 								{
 									"key": "clientName",
-									"value": "Jose Lema"
+									"value": "865886"
 								},
 								{
 									"key": "startDate",
@@ -343,7 +344,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"transactionType\": \"RETIRO\",\r\n    \"value\": -5000,\r\n    \"account\": {\r\n        \"accountNumber\": \"478758\",\r\n        \"accountType\": \"Ahorro\",\r\n        \"initialBalance\": 2000,\r\n        \"status\": true\r\n    }\r\n}",
+							"raw": "{\r\n    \"accountMovementDto\": {\r\n        \"transactionType\": \"RETIRO\",\r\n        \"value\": -5000,\r\n        \"account\": {\r\n            \"accountNumber\": \"478758\",\r\n            \"accountType\": \"Ahorro\",\r\n            \"initialBalance\": 2000,\r\n            \"status\": true\r\n        }\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

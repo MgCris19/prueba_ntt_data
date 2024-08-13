@@ -1,57 +1,81 @@
 package com.codingtest.account.controller;
 
-import com.codingtest.account.dto.Reports;
-import com.codingtest.account.model.AccountMovement;
-import com.codingtest.account.service.AccountMovementService;
-import com.codingtest.account.service.AccountService;
+import com.codingtest.account.dto.ReportsDto;
+import com.codingtest.account.dto.request.AccountMovementRequest;
+import com.codingtest.account.dto.response.*;
+import com.codingtest.account.exception.ResourceNotFoundException;
+import com.codingtest.account.service.impl.AccountMovementServiceImpl;
+import com.codingtest.account.validation.ValidationGroups;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.Error;
 import java.time.LocalDate;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/movimientos")
 public class AccountMovementController {
 
     @Autowired
-    private AccountMovementService accountMovementService;
+    private AccountMovementServiceImpl accountMovementServiceImpl;
 
     @GetMapping
-    public List<AccountMovement> getAllMovements() {
-        return accountMovementService.findAll();
+    public Response<AccountMovementsResponse, Error> getAllMovements() {
+        var movements = accountMovementServiceImpl.findAll();
+
+        var response = AccountMovementsResponse.builder().accountMovementsDto(movements).build();
+
+        return Response.ok(response);
     }
 
     @GetMapping("/{id}")
-    public AccountMovement getMovementById(@PathVariable Long id) {
-        return accountMovementService.findById(id);
+    public Response<AccountMovementResponse, Error> getMovementById(@PathVariable Long id) throws ResourceNotFoundException {
+        var movements = accountMovementServiceImpl.findById(id);
+
+        var response = AccountMovementResponse.builder().accountMovementDto(movements).build();
+
+        return Response.ok(response);
     }
 
     @GetMapping("/reportes")
-    public ResponseEntity<?> getReportes(
+    public Response<ReportsDto, Error> getReportes(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
             @RequestParam("clientName") String clientName) {
+        var movements = accountMovementServiceImpl.getMovementsByDateAndClientName(clientName,startDate, endDate);
 
-        // Llama al servicio para obtener los reportes dentro del rango de fechas
-        return accountMovementService.getMovementsByDateAndClientName(clientName,startDate, endDate);
+        return Response.ok(movements);
     }
 
     @PostMapping
-    public ResponseEntity<?> createMovement(@RequestBody AccountMovement movement) {
-        return accountMovementService.save(movement);
+    public Response<AccountMovementResponse, Error> createMovement( @Validated(ValidationGroups.CreateAcountMovement.class)
+                                                                        @Valid @RequestBody AccountMovementRequest movementRequest) throws ResourceNotFoundException {
+        var movement = accountMovementServiceImpl.save(movementRequest.getAccountMovementDto());
+
+        var response = AccountMovementResponse.builder().accountMovementDto(movement).build();
+
+        return Response.ok(response);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateMovement(@PathVariable Long id, @RequestBody AccountMovement movement) {
-        return accountMovementService.updateAccountMovement(id,movement);
+    public Response<AccountMovementResponse, Error> updateMovement(@PathVariable Long id, @RequestBody AccountMovementRequest movementRequest) throws ResourceNotFoundException {
+        var movement = accountMovementServiceImpl.updateAccountMovement(id,movementRequest.getAccountMovementDto());
+
+        var response = AccountMovementResponse.builder().accountMovementDto(movement).build();
+
+        return Response.ok(response);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteMovement(@PathVariable Long id) {
-        return accountMovementService.delete(id);
+    public Response<AccountMovementResponse, Error> deleteMovement(@PathVariable Long id) throws ResourceNotFoundException {
+        var movement = accountMovementServiceImpl.delete(id);
+
+        var response = AccountMovementResponse.builder().accountMovementDto(movement).build();
+
+        return Response.ok(response);
     }
 
 }

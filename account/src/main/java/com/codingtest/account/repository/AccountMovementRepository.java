@@ -1,7 +1,6 @@
 package com.codingtest.account.repository;
 
-import com.codingtest.account.model.Account;
-import com.codingtest.account.model.AccountMovement;
+import com.codingtest.account.entity.AccountMovement;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

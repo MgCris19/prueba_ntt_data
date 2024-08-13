@@ -1,53 +1,86 @@
 package com.codingtest.client.controller;
 
-import com.codingtest.client.model.Client;
+import com.codingtest.client.dto.request.ClientRequest;
+import com.codingtest.client.dto.response.ClientResponse;
+import com.codingtest.client.dto.response.ClientsResponse;
+import com.codingtest.client.dto.response.Response;
+import com.codingtest.client.exception.ResourceFoundException;
+import com.codingtest.client.exception.ResourceNotFoundException;
 import com.codingtest.client.service.ClientService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/clientes")
+@RequiredArgsConstructor
 public class ClientController {
 
-    @Autowired
-    private ClientService clientService;
+    private final ClientService clientService;
 
     @GetMapping
-    public List<Client> getAllClients() {
-        return clientService.findAll();
+    public Response<ClientsResponse, Error> getAllClients() {
+        var clients = clientService.findAll();
+
+        var response = ClientsResponse.builder().clients(clients).build();
+
+        return Response.ok(response);
     }
 
     @GetMapping("/{id}")
-    public Client getClientById(@PathVariable Long id) {
-        return clientService.findById(id);
+    public Response<ClientResponse, Error> getClientById(@PathVariable Long id) throws ResourceNotFoundException {
+        var client = clientService.findById(id);
+
+        var response = ClientResponse.builder().clientDto(client).build();
+
+        return Response.ok(response);
     }
 
     @GetMapping("/identification/{identification}")
-    public Client getClientById(@PathVariable String identification) {
-        return clientService.findByIdentification(identification);
+    public Response<ClientResponse, Error> getClientById(@PathVariable String identification) throws ResourceNotFoundException {
+        var client = clientService.findByIdentification(identification);
+
+        var response = ClientResponse.builder().clientDto(client).build();
+
+        return Response.ok(response);
     }
 
     @PostMapping
-    public ResponseEntity<?> createClient(@RequestBody Client client) {
-        return clientService.save(client);
+    public Response<ClientResponse, Error> createClient(@RequestBody @Valid ClientRequest clientRequest) throws ResourceFoundException {
+        var clients = clientService.save(clientRequest.getClientDto());
+
+        var response = ClientResponse.builder().clientDto(clients).build();
+
+        return Response.ok(response);
     }
 
     @PutMapping("/")
-    public ResponseEntity<?> updateClient(@RequestBody Client client) {
-        return clientService.updateClient(client);
+    public Response<ClientResponse, Error> updateClient(@RequestBody @Valid ClientRequest clientRequest) throws ResourceNotFoundException {
+        var clients = clientService.updateClient(clientRequest.getClientDto());
+
+        var response = ClientResponse.builder().clientDto(clients).build();
+
+        return Response.ok(response);
+
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteClient(@PathVariable Long id) {
-        return clientService.deleteClient(null,id);
+    public Response<ClientResponse, Error> deleteClient(@PathVariable Long id) throws ResourceNotFoundException {
+
+        var clients = clientService.deleteClient(null,id);
+
+        var response = ClientResponse.builder().clientDto(clients).build();
+
+        return Response.ok(response);
     }
 
     @DeleteMapping("/nombre/{name}")
-    public ResponseEntity<?> deleteClientByName(@PathVariable String name) {
-       return clientService.deleteClient(name,null);
+    public Response<ClientResponse, Error> deleteClientByName(@PathVariable String name) throws ResourceNotFoundException {
+        var clients = clientService.deleteClient(name,null);
+
+        var response = ClientResponse.builder().clientDto(clients).build();
+
+        return Response.ok(response);
     }
 
 }
